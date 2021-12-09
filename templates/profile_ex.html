@@ -94,6 +94,22 @@ Meu Perfil
 
 </div>
 
+<div class="disciplinas_profile">
+    <div class="disciplinas_borda">
+        <h4> Minhas disciplinas: </h4>
+        <ul> 
+            {% for disciplina in aluno.disciplina.all %}
+            <li> ⭐ <a href="{% url 'subject' disciplina.slug %}">  {{disciplina}} </a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+    
+
+
+    
+
+</div>
 
 
 <a href="{% url 'logout' %}">Fazer logout</a>
