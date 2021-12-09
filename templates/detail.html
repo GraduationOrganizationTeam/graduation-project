@@ -1,4 +1,6 @@
 {% extends 'base.html' %} 
+{% load static %}
+
 
 
 {% block title %}
@@ -127,12 +129,16 @@
             </div>
         </div>
         <div class="links">
-            <div class="link">
-                <a href="{%url 'avaliacao' disciplina.slug %}">Fazer Avaliação</a>
-            </div>
-            <div class="link">
-                <a href="#">Ver Comentários</a>
-            </div>
+            <a href="{%url 'avaliacao' disciplina.slug %}">
+                <div class="link">
+                    <p>Fazer Avaliação</p>
+                </div>
+            </a>
+            <a href="#">
+                <div class="link">
+                    <p>Ver Comentarios</p>
+                </div>
+            </a>
         </div>
     </div>
     <div class="col-lg-9 experience">
@@ -158,7 +164,7 @@
                         <div class="">
                             <div class="tudao">
                                 <div class="">
-                                    <div class="d-flex"><img class="rounded-circle" src="{{ comentario.autor.file_path }}">
+                                    <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario.autor.aluno.file_path %}">
                                         <div class="d-flex flex-column inf"><span class="name">{{ comentario.autor }}</span><span class="date">{{ comentario.data_de_criacao }}</span></div>
                                     </div>
                                     <div class="oficial">

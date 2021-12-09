@@ -74,7 +74,7 @@ class Aluno(models.Model):
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
     nome = models.CharField(max_length = 255)
     data_de_nascimento = models.DateField()
-    file_path = models.CharField(max_length = 255) # alteração em relação ao projeto 
+    file_path = models.CharField(max_length = 255, default="default.png") # alteração em relação ao projeto 
     ano_de_ingresso = models.IntegerField()
     disciplina = models.ManyToManyField(Disciplina)
 

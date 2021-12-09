@@ -17,6 +17,10 @@ nav{
     height: 61px; /* fixo */
 }
 
+a{
+    text-decoration: none;
+}
+
 ul{
     list-style: none;
 }
@@ -285,10 +289,6 @@ footer {
     height: fit-content;
 }
 
-.lista a {
-    text-decoration: none;
-}
-
 .flutuante {
     background-color: #f2f2f2;
     position: fixed;
@@ -346,12 +346,10 @@ footer {
 }
 
 .baixo a {
-    text-decoration: none;
     color: #212529;
 }
 
 .baixo a:hover {
-    text-decoration: none;
     color: tomato;
 }
 
@@ -384,7 +382,12 @@ footer {
     padding-left:0px;
 }
 
+.link p{
+    margin: auto
+}
+
 .link {
+    text-align: center;
     background-color: #f2f2f2;
     color: #212529;
     border-radius: 15px 15px;
@@ -393,7 +396,6 @@ footer {
 }
 
 .link a {
-    text-decoration: none;
     color: #212529;
 }
 
@@ -462,7 +464,6 @@ label{
 .container-login a {
     margin-top: 5%;
     color: #f2f2f2;
-    text-decoration: none;
 }
 
 .container-login a:hover {

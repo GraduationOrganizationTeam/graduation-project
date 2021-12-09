@@ -22,7 +22,7 @@ def signup(request):
             user.save()
 
             aluno = Aluno.objects.create(usuario=user, slug=username, departamento=departamento,
-                                        nome=nome, data_de_nascimento=data_de_nascimento, file_path="",
+                                        nome=nome, data_de_nascimento=data_de_nascimento, file_path="default.png",
                                         ano_de_ingresso=ano_de_ingresso)
             aluno.save()
             return HttpResponseRedirect(reverse('index'))
