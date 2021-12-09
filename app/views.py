@@ -1,12 +1,15 @@
 from .models import *
 from django.db.models import Avg
+from django.views import View
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.forms import ValidationError
-from .models import Avaliacao, Aluno
-from .forms import AvaliacaoForm
+from .models import Avaliacao, Aluno, Comentario, Like, Dislike
+from .forms import AvaliacaoForm, ComentarioForm
 from datetime import datetime
 
 
@@ -31,8 +34,9 @@ class DisciplinaDetailView(generic.DetailView):
         avals = Avaliacao.objects.filter(disciplina = self.object.id).aggregate(Avg("nota_1"),Avg("nota_2"),Avg("nota_3"),Avg("nota_4"))
 
         context = super().get_context_data(**kwargs)
-        context["lista_de_comentarios"] = Comentario.objects.filter(disciplina=self.object.id).order_by('-data_de_criacao')
+        context["lista_de_comentarios"] = Comentario.objects.filter(disciplina=self.object.id).filter(comentario_pai=None).order_by('-data_de_criacao')
         context["avaliacoes"] = avals
+        context["comentario_form"] = ComentarioForm()
         return context
 
 class AlunoDetailView(generic.DetailView):
@@ -45,36 +49,97 @@ class AlunoDetailView(generic.DetailView):
 
         return context
 
-def create_avaliacao(request,slug):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            avaliacao_form = AvaliacaoForm(request.POST)
 
-            # checando se a ultima avaliação foi há menos de cinco meses
-            query = Avaliacao.objects.filter(disciplina__slug=slug, autor=request.user).order_by("-data_de_criacao")
-            if query.exists():
-                date_format = "%H:%M:%S"
-                month = 2629800
-                print(query.values("data_de_criacao")[0])
-                diff = datetime.utcnow() - query[0].data_de_criacao.replace(tzinfo=None)
-                if diff.days < 5*30:
-                    raise ValidationError(_('Deve-se esperar 5 meses entre avaliações'),
-                                            code='invalid')
-            
-            if avaliacao_form.is_valid():
-                disciplina = Disciplina.objects.get(slug=slug)
-                avaliacao = Avaliacao(autor=request.user, disciplina=disciplina,
-                                    **avaliacao_form.cleaned_data)
-                avaliacao.save()
+# Criar Comentário Aninhado
+class CreateComentarioAninhado(LoginRequiredMixin, View):
+    form_class = ComentarioForm
 
-                return HttpResponseRedirect(
-                    reverse('subject', args=(avaliacao.disciplina.slug, )))
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        parent_id = self.kwargs.get("parent_id", None)
+        disciplina_slug = self.kwargs.get("disciplina_slug", None)
+        disciplina = get_object_or_404(Disciplina, slug=disciplina_slug)
+
+        # se o pai tiver pai, retornar
+        if parent_id != None:
+            parent_comment = get_object_or_404(Comentario, id=parent_id)
+            if parent_comment.comentario_pai is not None:
+                return HttpResponseRedirect(reverse('subject', args=(disciplina_slug,)))
         else:
-            avaliacao_form = AvaliacaoForm()
+            parent_comment = None
+        
+        if form.is_valid():
+            conteudo = form.cleaned_data["conteudo"]
+            comentario = Comentario(autor=request.user, disciplina=disciplina,
+                                    comentario_pai=parent_comment, excluido=False,
+                                    conteudo=conteudo)
+            comentario.save()
+            return HttpResponseRedirect(reverse('subject', args=(disciplina_slug,)))
+
+
+class CreateComentario(CreateComentarioAninhado):
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+        
+
+class UpdateLikes(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+
+        comment_id = self.kwargs.get('comment_id', None)
+        type = self.kwargs.get('type', None)
+        comment = get_object_or_404(Comentario, id=comment_id)
+
+        Like.objects.get_or_create(comentario=comment)
+        Dislike.objects.get_or_create(comentario=comment)
+
+        if type.lower() == 'like':
+
+            if request.user in comment.likes.autor.all():
+                comment.likes.autor.remove(request.user)
+            else:
+                comment.likes.autor.add(request.user)
+                comment.dislikes.autor.remove(request.user)
+        elif type.lower() == 'dislike':
+
+            if request.user in comment.dislikes.autor.all():
+                comment.dislikes.autor.remove(request.user)
+            else:
+                comment.dislikes.autor.add(request.user)
+                comment.likes.autor.remove(request.user)
+        else:
+            return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
+        return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
+
+@login_required
+def create_avaliacao(request,slug):
+    if request.method == 'POST':
+        avaliacao_form = AvaliacaoForm(request.POST)
+
+        # checando se a ultima avaliação foi há menos de cinco meses
+        query = Avaliacao.objects.filter(disciplina__slug=slug, autor=request.user).order_by("-data_de_criacao")
+        if query.exists():
+            date_format = "%H:%M:%S"
+            month = 2629800
+            print(query.values("data_de_criacao")[0])
+            diff = datetime.utcnow() - query[0].data_de_criacao.replace(tzinfo=None)
+            if diff.days < 5*30:
+                raise ValidationError(_('Deve-se esperar 5 meses entre avaliações'),
+                                        code='invalid')
+        
+        if avaliacao_form.is_valid():
+            disciplina = Disciplina.objects.get(slug=slug)
+            avaliacao = Avaliacao(autor=request.user, disciplina=disciplina,
+                                **avaliacao_form.cleaned_data)
+            avaliacao.save()
+
+            return HttpResponseRedirect(
+                reverse('subject', args=(avaliacao.disciplina.slug,)))
     else:
-        return HttpResponseRedirect(
-            reverse('login')
-        )        
+        avaliacao_form = AvaliacaoForm()
+
     context = {'disciplina_slug':slug, 'avaliacao_form': avaliacao_form}
     return render(request, 'avaliacao.html', context)
 

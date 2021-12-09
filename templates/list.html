@@ -32,7 +32,7 @@ Sobre nós
                         <li>{{ professor.nome }}</li>
                         {% endfor %}
                     </ul>
-                    <p>{{ disciplina.descricao }}</p>
+                    <p>{{ disciplina.descricao|slice:":75"|add:"..."}}</p>
                 </div>
             </a>
             {% endfor %}

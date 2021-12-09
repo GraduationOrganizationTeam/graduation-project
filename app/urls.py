@@ -7,7 +7,9 @@ urlpatterns = [
     path('subject/<slug:slug>/', views.DisciplinaDetailView.as_view() , name="subject"),
     path('about/', views.about, name="about"),
     path('contato/', views.contato, name="contato"),
-    # path('profile/<slug:slug>/', ... , name="profile"),
-    path('avaliacao/<slug:slug>', views.create_avaliacao , name='avaliacao'),
-    path('myprofile/<slug:slug>/', views.AlunoDetailView.as_view(), name='my_profile')
+    path('avaliacao/<slug:slug>/', views.create_avaliacao , name='avaliacao'),
+    path('myprofile/<slug:slug>/', views.AlunoDetailView.as_view(), name='my_profile'),
+    path('newcomment/like/<int:comment_id>/<str:type>/', views.UpdateLikes.as_view(), name='likeview'),
+    path('newcomment/<slug:disciplina_slug>/<int:parent_id>/', views.CreateComentarioAninhado.as_view(), name='post_comment_a'),
+    path('newcomment/<slug:disciplina_slug>/', views.CreateComentario.as_view(), name='post_comment'),
 ]

@@ -1,15 +1,22 @@
 {% extends 'base.html' %} 
 {% load static %}
 
-
-
 {% block title %}
 {{ disciplina.nome }}
 {% endblock title %}
 
+{% block script %}
+<script src="{% static 'javascript/child_comments.js' %}"></script>
+{% endblock script %}
 
 {% block content %}
+
 <style>
+
+a{
+    color: white;
+    text-decoration: none;
+}
 
 .date {
     font-size: 11px
@@ -58,11 +65,13 @@
     display:flex;
     border: solid #f2f2f2;
     border-radius: 30px 30px;
-    width: 70%;
+    width: 100%;
     padding: 2%;
-
 }
 
+.tudinho{
+    width: 85%;
+}
 
 .tudao img {
     width: 40px;
@@ -70,15 +79,15 @@
 }
 
 .icones {
+    width: 100px;
     display: flex;
-    column-gap: 10px;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .icons {
+    width: 100px;
     display: flex;
-    column-gap: 10px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -110,42 +119,68 @@
     right: 10px;
 }
 
+.balao{
+    margin-left: 15px;
+}
+
+.likes{
+    margin: 0 auto;
+}
+
+.esq{
+    position: sticky;
+    top: 12px;
+}
+
 </style>
 <div id="cartao" class="row">
-    <div class="col-lg-2 p-0">
-        <div class="mini">
-            <h2>
-                Notas
-            </h2>
-            <div class="d-flex flex-row justify-content-between col-12">
-                <ul class="col-6">
-                    <li>Ensino:</li>
-                    <li>Material:</li>
-                    <li>Avaliações:</li>
-                    <li>Dificuldade:</li>
-                </ul>
-                <ul class="col-6">
-                    <li class="nota">{{ avaliacoes.nota_1__avg | floatformat:1 }}</li>
-                    <li class="nota">{{ avaliacoes.nota_2__avg | floatformat:1 }}</li>
-                    <li class="nota">{{ avaliacoes.nota_3__avg | floatformat:1 }}</li>
-                    <li class="nota">{{ avaliacoes.nota_4__avg | floatformat:1 }}</li>
-                </ul>
+
+    <!-- Seção Lateral Esquerda -->
+    <div class="col-lg-2 p-0 esq">
+        <div class="esq">
+            <div class="mini">
+                <h2>
+                    Notas
+                </h2>
+                <div class="d-flex flex-row justify-content-between col-12">
+                    <!-- Labels -->
+                    <ul class="col-6">
+                        <li>Ensino:</li>
+                        <li>Material:</li>
+                        <li>Avaliações:</li>
+                        <li>Dificuldade:</li>
+                    </ul>
+
+                    <!-- Valores -->
+                    <ul class="col-6">
+                        <li class="nota">{{ avaliacoes.nota_1__avg | floatformat:1 }}</li>
+                        <li class="nota">{{ avaliacoes.nota_2__avg | floatformat:1 }}</li>
+                        <li class="nota">{{ avaliacoes.nota_3__avg | floatformat:1 }}</li>
+                        <li class="nota">{{ avaliacoes.nota_4__avg | floatformat:1 }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="links">
+                <a href="{%url 'avaliacao' disciplina.slug %}">
+                    <div class="link">
+                        <p>Fazer Avaliação</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="link">
+                        <p>Ver Comentarios</p>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="links">
-            <a href="{%url 'avaliacao' disciplina.slug %}">
-                <div class="link">
-                    <p>Fazer Avaliação</p>
-                </div>
-            </a>
-            <a href="#">
-                <div class="link">
-                    <p>Ver Comentarios</p>
-                </div>
-            </a>
-        </div>
     </div>
+
+    <!-- Seção Lateral Direita -->
     <div class="col-lg-9 experience">
+
+        <!-- Dados da Disciplina -->
         <div class="disciplina">
             <h2>
                 {{ disciplina.nome }}
@@ -154,40 +189,86 @@
                 {{ disciplina.descricao }}
             </p>
         </div>
+
         <hr><hr>
+
+        <!-- Seção de Comentarios -->
         <div id="comentarios" class="disciplina">
             <h2>Comentários</h2>
-            <div class="p-2">
-                <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" width="40"><textarea class="form-control ml-1 shadow-none textarea"></textarea></div>
-                <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="button">Comentar</button></div>
-            </div>
+
+            <!-- Comentario Creation Form -->
+            <form method="POST" class="mx-2" action="{% url 'post_comment' disciplina.slug %}">
+                {% csrf_token %}
+                {{ comentario_form.as_p }}
+                <button class="btn btn-primary" type="submit">Criar</button>
+            </form>
+
+            <!-- Visualização de Comentarios -->
             {% for comentario in lista_de_comentarios %}
             <div class="comentario">
                 <div class="container">
-                    <div class="">
+                    <div class="tudao">
                         <div class="">
-                            <div class="tudao">
-                                <div class="">
-                                    <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario.autor.aluno.file_path %}">
-                                        <div class="d-flex flex-column inf"><span class="name">{{ comentario.autor }}</span><span class="date">{{ comentario.data_de_criacao }}</span></div>
-                                    </div>
-                                    <div class="oficial">
-                                        <p>{{ comentario.conteudo }}</p>
-                                    </div>
-                                </div>
-                                <div class="icones d-flex flex-row">
-                                    <div class="d-flex flex-row fs-12 icons">
-                                        <div class="like cursor caret-up" title="curtir"><i class="fas fa-caret-up fa-3x"></i></div>
-                                        {{ comentario.curtidas }}
-                                        <div class="like cursor caret-down" title="descurtir"><i class="fas fa-caret-down fa-3x"></i></div>
-                                        <div class="like cursor comment"><i class="fas fa-comment-alt fa-2x"></i></div>
-                                    </div>
-                                </div>
+                            <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario.autor.aluno.file_path %}">
+                                <div class="d-flex flex-column inf"><span class="name">{{ comentario.autor }}</span><span class="date">{{ comentario.data_de_criacao |date:"d M Y \à\s H:i" }}</span></div>
+                            </div>
+                            <div class="oficial">
+                                <p>{{ comentario.conteudo }}</p>
+                            </div>
+                        </div>
+                        <div class="icones d-flex flex-row">
+                            <div class="d-flex flex-row fs-12 icons">
+                                <a href="{% url 'likeview' comentario.id 'like' %}"><div class="like cursor caret-up" title="curtir"><i class="fas fa-caret-up fa-3x"></i></div></a>
+                                {% if comentario.get_total_likes %}
+                                    <p class="likes">{{ comentario.get_total_likes }}</p>
+                                {% else %}
+                                    <p class="likes"> 0 </p>
+                                {% endif %}
+                                <a href="{% url 'likeview' comentario.id 'dislike' %}"><div class="like cursor caret-down" title="descurtir"><i class="fas fa-caret-down fa-3x"></i></div></a>
+                                <a id="form-{{ forloop.counter0 }}" onclick="myFunc(this)"><div class="like cursor comment"><i class="balao fas fa-comment-alt fa-2x"></i></div></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Comentario Escondido Creation Form -->
+            <form method="POST" style="display: none;" id="hidden-{{ forloop.counter0 }}" class="mx-2 hidden-form" action="{% url 'post_comment_a' disciplina_slug=disciplina.slug parent_id=comentario.id %}">
+                {% csrf_token %}
+                {{ comentario_form.as_p }}
+                <button class="btn btn-primary" type="submit">Criar</button>
+            </form>
+
+            <!-- Visualização de Comentarios Aninhados -->
+            {% if comentario.comentario_set.all %}
+                {% for comentario_filho in comentario.comentario_set.all %}
+                    <div class="comentario">
+                        <div class="container d-flex justify-content-end">
+                            <div class="tudao tudinho">
+                                <div class="">
+                                    <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario_filho.autor.aluno.file_path %}">
+                                        <div class="d-flex flex-column inf"><span class="name">{{ comentario_filho.autor }}</span><span class="date">{{ comentario_filho.data_de_criacao }}</span></div>
+                                    </div>
+                                    <div class="oficial">
+                                        <p>{{ comentario_filho.conteudo }}</p>
+                                    </div>
+                                </div>
+                                <div class="icones d-flex flex-row">
+                                    <div class="d-flex flex-row fs-12 icons">
+                                        <a href="{% url 'likeview' comentario_filho.id 'like' %}"><div class="like cursor caret-up" title="curtir"><i class="fas fa-caret-up fa-3x"></i></div></a>
+                                        {% if comentario_filho.get_total_likes %}
+                                            <p class="likes">{{ comentario_filho.get_total_likes }}</p>
+                                        {% else %}
+                                            <p class="likes"> 0 </p>
+                                        {% endif %}
+                                        <a href="{% url 'likeview' comentario_filho.id 'dislike' %}"><div class="like cursor caret-down" title="descurtir"><i class="fas fa-caret-down fa-3x"></i></div></a>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
             {% endfor %}
         </div>
     </div>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.fields.related import OneToOneField
 
 class Departamento(models.Model):
     nome = models.CharField(max_length=20, unique=True)
@@ -58,13 +59,30 @@ class Comentario(models.Model):
                                         on_delete=models.CASCADE,
                                         blank = True,
                                         null = True)
-    exlcuido = models.BooleanField()
+    excluido = models.BooleanField()
     conteudo = models.TextField()
     data_de_criacao = models.DateTimeField(auto_now_add=True)
-    curtidas = models.IntegerField()
+
+    @property
+    def get_total_likes(self):
+        return self.likes.autor.count() - self.dislikes.autor.count()
 
     def __str__(self):
         return f"comentário feito por {self.autor} em {self.disciplina}"
+
+class Like(models.Model):
+    comentario = OneToOneField(Comentario, related_name="likes", on_delete=models.CASCADE)
+    autor = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    
+    def __str__(self):
+        return f"likes dados em {self.comentario}"
+
+class Dislike(models.Model):
+    comentario = OneToOneField(Comentario, related_name="dislikes", on_delete=models.CASCADE)
+    autor = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    
+    def __str__(self):
+        return f"dislikes dados em {self.comentario}"
 
 class Aluno(models.Model):
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL,
