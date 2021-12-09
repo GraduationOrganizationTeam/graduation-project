@@ -35,6 +35,15 @@ class DisciplinaDetailView(generic.DetailView):
         context["avaliacoes"] = avals
         return context
 
+class AlunoDetailView(generic.DetailView):
+    model = Aluno
+    template_name = 'profile.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        return context
 
 def create_avaliacao(request,slug):
     if request.user.is_authenticated:
@@ -69,19 +78,6 @@ def create_avaliacao(request,slug):
     context = {'disciplina_slug':slug, 'avaliacao_form': avaliacao_form}
     return render(request, 'avaliacao.html', context)
 
-
-class AlunoDetailView(generic.DetailView):
-    model = Aluno
-    template_name = 'profile.html'
-
-    def get_context_data(self, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-
-        return context
-
-
-
 def index(request):
     context = {}
     return render(request, 'index.html', context)
@@ -93,7 +89,3 @@ def about(request):
 def contato(request):
     context = {}
     return render(request, 'contato.html', context)
-
-def cadastro(request):
-    context = {}
-    return render(request, 'cadastro.html', context)

@@ -80,6 +80,7 @@ class Aluno(models.Model):
 
 class Professor(models.Model):
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+    slug = models.SlugField(null=False, unique=True) # não queremos que usuarios normais possam alterar https://learndjango.com/tutorials/django-slug-tutorial
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,
                                 primary_key=True)

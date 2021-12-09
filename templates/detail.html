@@ -54,11 +54,19 @@
 
 .tudao {
     position: relative;
+    box-shadow: black 0px 5px 5px;
     display:flex;
     border: solid #f2f2f2;
     border-radius: 30px 30px;
     width: 70%;
     padding: 2%;
+
+}
+
+
+.tudao img {
+    width: 40px;
+    height: 40px;
 }
 
 .icones {
@@ -71,11 +79,7 @@
     display: flex;
     column-gap: 10px;
     justify-content: space-between;
-}
-
-.tudao img {
-    width: 40px;
-    height: 40px;
+    align-items: center;
 }
 
 .oficial {
@@ -172,10 +176,10 @@
                                     </div>
                                 </div>
                                 <div class="icones d-flex flex-row">
-                                    {{ comentario.curtidas }}
                                     <div class="d-flex flex-row fs-12 icons">
-                                        <div class="like cursor caret-up"><i class="fas fa-caret-up fa-3x"></i></div>
-                                        <div class="like cursor caret-down"><i class="fas fa-caret-down fa-3x"></i></div>
+                                        <div class="like cursor caret-up" title="curtir"><i class="fas fa-caret-up fa-3x"></i></div>
+                                        {{ comentario.curtidas }}
+                                        <div class="like cursor caret-down" title="descurtir"><i class="fas fa-caret-down fa-3x"></i></div>
                                         <div class="like cursor comment"><i class="fas fa-comment-alt fa-2x"></i></div>
                                     </div>
                                 </div>

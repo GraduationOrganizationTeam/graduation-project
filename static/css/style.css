@@ -291,7 +291,8 @@ footer {
 
 .flutuante {
     background-color: #f2f2f2;
-    position: fixed;
+    position: sticky;
+    top: 5px;
     left: 5%;
     padding: 2%;
 }
