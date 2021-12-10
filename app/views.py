@@ -19,6 +19,12 @@ class DisciplinaListView(generic.ListView):
     template_name = 'list.html'
     context_object_name = 'lista_disciplinas'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('query')
+        context['searchq'] = query.replace("+"," ")
+        return context
+
     def get_queryset(self):
         queryset = Disciplina.objects.all()
         if self.request.GET.get("query", False):

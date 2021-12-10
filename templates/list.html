@@ -42,8 +42,8 @@ Sobre nós
     <div class="pagination">
         <span class="step-links d-flex justify-content-center">
             {% if page_obj.has_previous %}
-                <a style="color: #000000; text-decoration: none;" href="?page=1"><i class="fas fa-angle-double-left"></i></a>
-                <a style="color: #000000; text-decoration: none;" href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page=1"><i class="fas fa-angle-double-left"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a>
             {% endif %}
     
             <span class="current">
@@ -51,8 +51,8 @@ Sobre nós
             </span>
     
             {% if page_obj.has_next %}
-                <a style="color: #000000; text-decoration: none;" href="?page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a>
-                <a style="color: #000000; text-decoration: none;" href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
             {% endif %}
         </span>
     </div>
