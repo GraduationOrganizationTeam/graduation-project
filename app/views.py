@@ -8,8 +8,8 @@ from django.views import generic
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.forms import ValidationError
-from .models import Avaliacao, Aluno, Comentario, Like, Dislike
-from .forms import AvaliacaoForm, ComentarioForm
+from .models import Avaliacao, Aluno, Comentario, Like, Dislike, Contato
+from .forms import AvaliacaoForm, ComentarioForm, ContatoForm
 from datetime import datetime
 
 
@@ -151,6 +151,18 @@ def about(request):
     context = {}
     return render(request, 'about.html', context)
 
+
 def contato(request):
-    context = {}
-    return render(request, 'contato.html', context)
+    if request.method == 'POST':
+        contato_nome = request.POST['nome']
+        contato_email = request.POST['email']
+        contato_assunto = request.POST['assunto']
+        contato_texto = request.POST['texto']
+        contato = Contato(nome=contato_nome, email=contato_email, assunto=contato_assunto, texto=contato_texto)
+        contato.save()
+        return HttpResponseRedirect(
+            reverse('contato'))
+    else:
+        form = ContatoForm()
+        context = {'form': form}
+        return render(request, 'contato.html', context)

@@ -107,3 +107,19 @@ class Professor(models.Model):
     file_path = models.CharField(max_length = 255) # alteração em relação ao projeto 
     ano_de_ingresso = models.IntegerField()
     disciplina = models.ManyToManyField(Disciplina)
+
+
+class Contato(models.Model):
+    ASSUNTOS =(
+    ("1", "Preciso de ajuda"),
+    ("2", "Encontrei um bug no site"),
+    ("3", "Encontrei um erro nos dados"),
+    ("4", "Sou professor e não gostei de algo"),
+    ("5", "Outro assunto"),
+)
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    assunto = models.CharField(max_length=1,
+                  choices=ASSUNTOS,
+                  default="5")
+    texto = models.CharField(max_length=1000)

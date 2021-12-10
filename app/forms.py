@@ -1,7 +1,8 @@
+from django import forms
 from django.forms import ModelForm, Textarea
 from django.forms import widgets
 from django.forms.widgets import RadioSelect
-from .models import Avaliacao, Comentario
+from .models import Avaliacao, Comentario, Contato
 
 class AvaliacaoForm(ModelForm):
    
@@ -32,3 +33,19 @@ class ComentarioForm(ModelForm):
         model=Comentario
         fields=('conteudo',)
         labels={'conteudo':"Conteúdo"}
+
+class ContatoForm(ModelForm):
+    class Meta:
+        model = Contato
+        fields = [
+            'nome',
+            'email',
+            'assunto',
+            'texto'
+        ]
+        labels = {
+            'nome': 'Nome',
+            'email': 'E-mail',
+            'assunto': 'Assunto',
+            'texto': 'Texto'
+        }

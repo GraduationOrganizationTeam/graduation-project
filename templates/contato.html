@@ -4,24 +4,18 @@
 Contato
 {% endblock title %}
 
-
 {% block content %}
 <br>
 <div class="contato">
     <h1>Contato</h1>
-    <br>
-    <p>
-        4 virgens e 1 desejo: tirar 10
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pretium turpis ac ullamcorper accumsan. In eu neque quis felis finibus 
-        ultrices. Mauris a sem interdum, efficitur magna sed, suscipit diam. Integer ut lectus ut mi elementum porta. Integer bibendum ex augue,
-         ac ultricies ligula placerat quis. Vestibulum finibus felis vel odio vulputate vestibulum. Pellentesque iaculis id dolor eu consectetur.
-          Suspendisse maximus at eros at venenatis. Nunc egestas odio ac dui aliquet, eget rutrum velit blandit.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus non metus sed dapibus. Maecenas iaculis nec enim quis venenatis. Nam 
-        cursus arcu eu lacus scelerisque facilisis. Vestibulum est nisi, finibus sed dolor sit amet, vulputate tempor magna. Morbi at lacus ultrices, 
-        efficitur quam sed, mattis nibh. Pellentesque placerat pulvinar odio, nec convallis neque ullamcorper in. Morbi rutrum mi at eleifend consectetur.
-         Nullam rhoncus nulla at libero pretium venenatis. Proin ut mattis ante, id ultricies ex. Duis in purus suscipit, blandit mi imperdiet, molestie 
-        diam. Suspendisse rutrum posuere elit. Proin vel accumsan justo, quis commodo mi. Quisque pellentesque mi eget dignissim condimentum.
+    <p>Se você possui alguma sugestão de alteração, encontrou algum erro no site ou nos dados inseridos, 
+        por favor não exite em nos contatar!
     </p>
+    <form method="POST" action="{% url 'contato' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
 </div>
 
 {% endblock content %}
