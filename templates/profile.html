@@ -60,6 +60,11 @@ Meu Perfil
     margin-left: 15%;
 }
 
+.logout {
+    color: white;
+    background-color: black;
+}
+
 .disciplinas_borda {
     border: solid 2px #f2f2f2;
     border-radius: 10px;
@@ -78,8 +83,6 @@ Meu Perfil
 
 </style>
 
-
-
 <div class='grande'> 
     <img src="/static/default.png" alt="Foto de perfil" class="photo_perfil">
     <div class="user">
@@ -91,11 +94,25 @@ Meu Perfil
     <div class="user">
         <h4> Ano de ingresso: {{aluno.ano_de_ingresso}}</h4>
     </div>
-
 </div>
 
+{% if aluno.usuario.username == request.user.username %}
 
+<div class="disciplinas_profile">
+    <div class="disciplinas_borda">
+        <h4> Minhas disciplinas: </h4>
+        <ul> 
+            {% for disciplina in aluno.disciplina.all %}
+            <li> ⭐ <a href="{% url 'subject' disciplina.slug %}">  {{disciplina}} </a></li>
 
-<a href="{% url 'logout' %}">Fazer logout</a>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
+<a href="{% url 'logout' %}" class="logout">Fazer logout</a>
+
+{% else %}
+
+{% endif %}
 {% endblock content %}
