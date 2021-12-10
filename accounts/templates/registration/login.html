@@ -10,10 +10,10 @@ Login
     <div class="card card-container">
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
         <p id="profile-name" class="profile-name-card"></p>
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" class="login-form" action="{% url 'login' %}">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" value="login">Entrar</button>
+            <button type="submit" class="btn btn-outline-light" value="login">Entrar</button>
             <input type="hidden" name="next" value="{{ next }}">
         </form>
         <a href="{% url 'signup' %}" class="forgot-password">

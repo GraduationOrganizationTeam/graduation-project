@@ -252,13 +252,17 @@ footer {
     color: rgb(104, 145, 162);
 }
 
-.forgot-password:hover,
+/* .forgot-password:hover,
 .forgot-password:active,
 .forgot-password:focus{
     color: rgb(255, 255, 255);
-}
+} */
 
 /* LISTA */
+
+.esquerda{
+    max-width: 80%;
+}
 
 .step-links{
     min-width: 100px;
@@ -450,23 +454,29 @@ label{
     text-align: center;
 }
 
-.container-login button {
-    background-color: #f2f2f2;
-    color: #212529;
-    border-radius: 15px;
-    padding: 5px 10px;
-}
-
-.container-login button:hover {
+/* .container-login button:hover {
     box-shadow: 0 2px 4px #f2f2f2c4;
     transition-duration: 300ms;
-}
+} */
 
 .container-login a {
     margin-top: 5%;
-    color: #f2f2f2;
 }
 
 .container-login a:hover {
+    color: #f2f2f2;
     text-decoration: underline;
+}
+
+/* Error Message */
+
+.errorlist{
+    margin-bottom: 5%;
+    padding: 0;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
