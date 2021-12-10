@@ -252,13 +252,11 @@ footer {
     color: rgb(104, 145, 162);
 }
 
-/* .forgot-password:hover,
-.forgot-password:active,
-.forgot-password:focus{
-    color: rgb(255, 255, 255);
-} */
-
 /* LISTA */
+
+.filters li{
+    margin-bottom: 10%;
+}
 
 .esquerda{
     max-width: 80%;
@@ -276,6 +274,7 @@ footer {
 
 .lista {
     width: 70%;
+    text-align: left!important;
 }
 
 .container-lista {
@@ -288,7 +287,7 @@ footer {
 
 .filter {
     background-color: #f2f2f200;
-    border-radius: 30px 0px;
+    border-radius: 30px;
     margin-right: 2%;
     height: fit-content;
 }

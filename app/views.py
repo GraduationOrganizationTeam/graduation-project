@@ -1,5 +1,5 @@
 from .models import *
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.forms import ValidationError
 from .models import Avaliacao, Aluno, Comentario, Like, Dislike, Contato
-from .forms import AvaliacaoForm, ComentarioForm, ContatoForm
+from .forms import AvaliacaoForm, ComentarioForm, ContatoForm, FiltroForm
 from datetime import datetime
 
 
@@ -21,15 +21,55 @@ class DisciplinaListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        #Passando a query como contexto
         query = self.request.GET.get('query')
         context['searchq'] = query.replace("+"," ")
+
+        #Passando o formulário de filtro como contexto
+        form = FiltroForm()
+        context["filtro"] = form
         return context
 
     def get_queryset(self):
-        queryset = Disciplina.objects.all()
+        queryset = Disciplina.objects.annotate(c1=Count('comentario__id'),c2=Count('avaliacao__id'),
+                                        a1=Avg('avaliacao__nota_1'),a2=Avg('avaliacao__nota_2'),
+                                        a3=Avg('avaliacao__nota_3'),a4=Avg('avaliacao__nota_4'))
         if self.request.GET.get("query", False):
             search_term = self.request.GET['query'].lower()
             queryset = queryset.filter(nome__icontains=search_term)
+
+        if self.request.GET.get("o",False):
+
+            print(queryset[0].c1)
+            
+            ORDERING_DICT = {
+                "1":'departamento',
+                "2":'nome',
+                "3":'creditos_aula',
+                "4":'creditos_trabalho',
+                "5":'-c1',
+                "6":'-c2',
+                "7":'-a1',
+                "8":'-a2',
+                "9":'-a3',
+                "10":'-a4'
+            }
+
+            order_by = self.request.GET['o']
+            dept     = self.request.GET['d']
+            credito_a = self.request.GET['ca']
+            credito_t = self.request.GET['ct']
+
+            kwargs = {"departamento_id":dept,
+                      "creditos_aula": credito_a,
+                      "creditos_trabalho": credito_t}
+            
+            for k,v in kwargs.items():
+                if v != "":
+                    queryset = queryset.filter(**{k:v})
+            queryset = queryset.order_by(ORDERING_DICT[order_by])
+
         return queryset        
 
 class DisciplinaDetailView(generic.DetailView):

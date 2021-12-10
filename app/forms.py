@@ -1,8 +1,29 @@
 from django import forms
-from django.forms import ModelForm, Textarea
-from django.forms import widgets
+from django.forms import ModelForm, Form
 from django.forms.widgets import RadioSelect
-from .models import Avaliacao, Comentario, Contato
+from .models import Avaliacao, Comentario, Contato, Departamento
+
+class FiltroForm(Form):
+    TYPES_OF_ORDERING=[(1,'Departamento'),(2,'Nome'),(3,'Creditos Aula'),(4,'Creditos Trabalho'),
+                       (5, 'Numero de Comentarios'),(6,'Numero de Avaliações'),(7,'Ensino'),
+                       (8,'Material'),(9,'Avaliações'),(10,'Dificuldade')]
+
+    ordenar_por = forms.ChoiceField(choices=TYPES_OF_ORDERING)
+
+    departamento = forms.ModelChoiceField(queryset=Departamento.objects, empty_label="")
+    
+    credito_aula = forms.IntegerField()
+    credito_aula.widget.attrs = {'min':'1','max':'10'}
+
+    credito_trabalho = forms.IntegerField()
+    credito_trabalho.widget.attrs = {'min':'1','max':'10'}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class AvaliacaoForm(ModelForm):
    

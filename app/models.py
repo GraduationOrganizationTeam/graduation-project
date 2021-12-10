@@ -20,6 +20,9 @@ class Disciplina(models.Model):
     creditos_aula = models.IntegerField(default=0)           # mudança do projeto, atualiza depois
     creditos_trabalho = models.IntegerField(default=0)       # mudança do projeto, atualiza depois
 
+    class Meta:
+        ordering = ('nome',)
+
     def __str__(self):
         return self.nome
 

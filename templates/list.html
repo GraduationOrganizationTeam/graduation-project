@@ -1,19 +1,28 @@
 {% extends 'base.html'%}
 
+{% load static %}
+
 {% block title %}
-Sobre nós
+Lista de Disciplinas
 {% endblock title %}
 
+{% block script %}
+<script src="{% static 'javascript/filter.js' %}"></script>
+{% endblock script %}
+
 {% block content %}
-    <div class="container-lista">
+    <div class="container-lista text-center">
+
+        <!-- filtro -->
         <div class="filter col-md-2 flutuante">
             <h4>Filtros</h4>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
+            <ul id="filter-form" class="filters px-0">
+            {{ filtro.as_ul }}
             </ul>
+            <button class="btn btn-outline-dark" onclick="filterRedirect()">FILTRAR</button>
         </div>
+
+        <!-- listagem de disciplinas -->
         <div class="lista col-md-9">
             {% for disciplina in lista_disciplinas %}
             <a href="{% url 'subject' disciplina.slug %}">
@@ -42,17 +51,17 @@ Sobre nós
     <div class="pagination">
         <span class="step-links d-flex justify-content-center">
             {% if page_obj.has_previous %}
-                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page=1"><i class="fas fa-angle-double-left"></i></a>
-                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page=1"><i class="fas fa-angle-double-left fa-2x"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left fa-2x"></i></a>
             {% endif %}
     
-            <span class="current">
-                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            <span class="current mx-5 pt-1">
+                {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
             </span>
     
             {% if page_obj.has_next %}
-                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a>
-                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right fa-2x"></i></a>
+                <a style="color: #000000; text-decoration: none;" href="?query={{searchq}}&page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right fa-2x"></i></a>
             {% endif %}
         </span>
     </div>
