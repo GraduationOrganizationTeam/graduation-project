@@ -34,7 +34,6 @@ class Signupform(UserCreationForm):
             else:
                 self.fields[field].widget.attrs["class"] = "form-select"
 
-
     class Meta:
         model = User
         fields = ('nome', 'email', 'ano_de_ingresso', 'departamento', 'username', 'password1', 'password2')
