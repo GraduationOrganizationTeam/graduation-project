@@ -5,11 +5,40 @@ Contato
 {% endblock title %}
 
 {% block content %}
+
+<style>
+    .contact-name {
+        width: 80%;
+        border-radius: 15px;
+        padding: 1%;
+    }
+
+    .contact-email {
+        width: 80%;
+        border-radius: 15px;
+        padding: 1%;
+    }
+
+    .contact-assunto {
+        width: 80%;
+        border-radius: 15px;
+        padding: 1%;
+    }
+
+    .contact-texto {
+        width: 80%;
+        height: 200px;
+        border-radius: 15px;
+        padding: 1%;
+    }
+
+</style>
+
 <br>
 <div class="contato">
     <h1>Contato</h1>
     <p>Se você possui alguma sugestão de alteração, encontrou algum erro no site ou nos dados inseridos, 
-        por favor não exite em nos contatar!
+        por favor não hesite em nos contatar!
     </p>
     <form method="POST" action="{% url 'contato' %}">
         {% csrf_token %}

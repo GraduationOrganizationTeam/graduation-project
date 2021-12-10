@@ -49,3 +49,10 @@ class ContatoForm(ModelForm):
             'assunto': 'Assunto',
             'texto': 'Texto'
         }
+
+    def __init__(self, *args, **kwargs):
+        super(ContatoForm, self).__init__(*args, **kwargs)
+        self.fields['nome'].widget.attrs["class"] = "contact-name"
+        self.fields['email'].widget.attrs["class"] = "contact-email"
+        self.fields['assunto'].widget.attrs["class"] = "contact-assunto"
+        self.fields['texto'].widget.attrs["class"] = "contact-texto"

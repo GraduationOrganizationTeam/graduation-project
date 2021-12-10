@@ -122,4 +122,4 @@ class Contato(models.Model):
     assunto = models.CharField(max_length=1,
                   choices=ASSUNTOS,
                   default="5")
-    texto = models.CharField(max_length=1000)
+    texto = models.TextField(max_length=1000)
