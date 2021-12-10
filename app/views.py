@@ -72,7 +72,7 @@ class CreateComentarioAninhado(LoginRequiredMixin, View):
                                     comentario_pai=parent_comment, excluido=False,
                                     conteudo=conteudo)
             comentario.save()
-            return HttpResponseRedirect(reverse('subject', args=(disciplina_slug,)))
+            return HttpResponseRedirect(reverse('subject', args=(disciplina_slug,)) + f"#{comentario.id}")
 
 
 class CreateComentario(CreateComentarioAninhado):
@@ -107,8 +107,8 @@ class UpdateLikes(LoginRequiredMixin, View):
                 comment.dislikes.autor.add(request.user)
                 comment.likes.autor.remove(request.user)
         else:
-            return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
-        return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
+            return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,))+ f"#{comment.id}")
+        return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,))+ f"#{comment.id}")
 
 
 @login_required

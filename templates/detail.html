@@ -217,7 +217,7 @@ a{
 
             <!-- Visualização de Comentarios -->
             {% for comentario in lista_de_comentarios %}
-            <div class="comentario">
+            <div class="comentario" id="{{ comentario.id }}">
                 <div class="container">
                     <div class="tudao">
                         <div class="">
@@ -254,7 +254,7 @@ a{
             <!-- Visualização de Comentarios Aninhados -->
             {% if comentario.comentario_set.all %}
                 {% for comentario_filho in comentario.comentario_set.all %}
-                    <div class="comentario">
+                    <div class="comentario" id="{{ comentario_filho.id }}">
                         <div class="container d-flex justify-content-end">
                             <div class="tudao tudinho">
                                 <div class="">
