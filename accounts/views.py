@@ -4,6 +4,8 @@ from django.urls import reverse
 from .forms import Signupform
 from app.models import Aluno, Professor
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 
 def signup(request):
     if request.method == 'POST':
@@ -25,9 +27,15 @@ def signup(request):
                                         nome=nome, data_de_nascimento=data_de_nascimento, file_path="default.png",
                                         ano_de_ingresso=ano_de_ingresso)
             aluno.save()
-            return HttpResponseRedirect(reverse('index'))
+            login(request, user)
+            return HttpResponseRedirect(reverse('myprofile'))
     else:
         form = Signupform()
 
     context = {'form': form}
     return render(request, 'accounts/signup.html', context)
+
+@login_required
+def get_my_profile(request):
+    slug = request.user.aluno.slug
+    return HttpResponseRedirect(reverse('profile', args=(slug, )))

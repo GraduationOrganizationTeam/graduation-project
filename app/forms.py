@@ -34,6 +34,10 @@ class ComentarioForm(ModelForm):
         fields=('conteudo',)
         labels={'conteudo':"Conteúdo"}
 
+    def __init__(self, *args, **kwargs):
+        super(ComentarioForm, self).__init__(*args, **kwargs)
+        self.fields['conteudo'].widget.attrs["class"] = "comment-conteudo form-control"
+
 class ContatoForm(ModelForm):
     class Meta:
         model = Contato

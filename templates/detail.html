@@ -132,6 +132,18 @@ a{
     top: 12px;
 }
 
+.comment-conteudo {
+    height: 5rem;
+    width: 90%;
+    display: inline-block;
+}
+
+.form-comment {
+    margin-bottom: 5%;
+}
+
+
+
 </style>
 <div id="cartao" class="row">
 
@@ -197,10 +209,10 @@ a{
             <h2>Comentários</h2>
 
             <!-- Comentario Creation Form -->
-            <form method="POST" class="mx-2" action="{% url 'post_comment' disciplina.slug %}">
+            <form method="POST" class="mx-2 form-comment" action="{% url 'post_comment' disciplina.slug %}">
                 {% csrf_token %}
                 {{ comentario_form.as_p }}
-                <button class="btn btn-primary" type="submit">Criar</button>
+                <button class="btn btn-outline-light" type="submit">Criar</button>
             </form>
 
             <!-- Visualização de Comentarios -->
