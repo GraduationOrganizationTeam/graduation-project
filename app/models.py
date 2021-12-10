@@ -9,6 +9,7 @@ class Departamento(models.Model):
     def __str__(self):
         return self.nome
 
+
 class Disciplina(models.Model):
     nome = models.CharField(max_length=255, unique = True)
     slug = models.SlugField(null=False, unique=True) # não queremos que usuarios normais possam alterar https://learndjango.com/tutorials/django-slug-tutorial
@@ -19,9 +20,9 @@ class Disciplina(models.Model):
     creditos_aula = models.IntegerField(default=0)           # mudança do projeto, atualiza depois
     creditos_trabalho = models.IntegerField(default=0)       # mudança do projeto, atualiza depois
 
-
     def __str__(self):
         return self.nome
+
 
 class Avaliacao(models.Model):
     autor = models.ForeignKey(
@@ -41,6 +42,7 @@ class Avaliacao(models.Model):
 
     def __str__(self):
         return f"avaliação feita por {self.autor} para {self.disciplina}"
+
 
 class Comentario(models.Model):
     autor = models.ForeignKey(
@@ -70,6 +72,7 @@ class Comentario(models.Model):
     def __str__(self):
         return f"comentário feito por {self.autor} em {self.disciplina}"
 
+
 class Like(models.Model):
     comentario = OneToOneField(Comentario, related_name="likes", on_delete=models.CASCADE)
     autor = models.ManyToManyField(settings.AUTH_USER_MODEL)
@@ -77,12 +80,14 @@ class Like(models.Model):
     def __str__(self):
         return f"likes dados em {self.comentario}"
 
+
 class Dislike(models.Model):
     comentario = OneToOneField(Comentario, related_name="dislikes", on_delete=models.CASCADE)
     autor = models.ManyToManyField(settings.AUTH_USER_MODEL)
     
     def __str__(self):
         return f"dislikes dados em {self.comentario}"
+
 
 class Aluno(models.Model):
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL,
@@ -95,6 +100,7 @@ class Aluno(models.Model):
     file_path = models.CharField(max_length = 255, default="default.png") # alteração em relação ao projeto 
     ano_de_ingresso = models.IntegerField()
     disciplina = models.ManyToManyField(Disciplina)
+
 
 class Professor(models.Model):
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)

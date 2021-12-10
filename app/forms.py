@@ -28,6 +28,7 @@ class AvaliacaoForm(ModelForm):
         for field in self.fields:
             self.fields[field].widget = RadioSelect(choices=CHOICES)
 
+
 class ComentarioForm(ModelForm):
     class Meta:
         model=Comentario
@@ -37,6 +38,7 @@ class ComentarioForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ComentarioForm, self).__init__(*args, **kwargs)
         self.fields['conteudo'].widget.attrs["class"] = "comment-conteudo form-control"
+
 
 class ContatoForm(ModelForm):
     class Meta:

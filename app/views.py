@@ -110,6 +110,7 @@ class UpdateLikes(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
         return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,)))
 
+
 @login_required
 def create_avaliacao(request,slug):
     if request.method == 'POST':
@@ -147,7 +148,6 @@ def index(request):
 def about(request):
     context = {}
     return render(request, 'about.html', context)
-
 
 def contato(request):
     if request.method == 'POST':
