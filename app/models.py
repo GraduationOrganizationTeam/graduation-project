@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.fields.related import OneToOneField
+from django.contrib.auth.models import Permission
 
 class Departamento(models.Model):
     nome = models.CharField(max_length=20, unique=True)
@@ -117,6 +118,10 @@ class Professor(models.Model):
     ano_de_ingresso = models.IntegerField()
     disciplina = models.ManyToManyField(Disciplina)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.usuario.has_perm('app.change_disciplina'):
+            self.usuario.user_permissions.add(Permission.objects.filter(codename='change_disciplina')[0])
 
 class Contato(models.Model):
     ASSUNTOS =(

@@ -142,7 +142,9 @@ a{
     margin-bottom: 5%;
 }
 
-
+.professor{
+    background-color: #004b53;
+}
 
 </style>
 <div id="cartao" class="row">
@@ -185,6 +187,13 @@ a{
                         <p>Ver Comentarios</p>
                     </div>
                 </a>
+                {% if perms.app.change_disciplina %}
+                <a href="{% url 'update' disciplina.slug %}">
+                    <div class="link">
+                        <p>Editar Descrição</p>
+                    </div>
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -219,7 +228,7 @@ a{
             {% for comentario in lista_de_comentarios %}
             <div class="comentario" id="{{ comentario.id }}">
                 <div class="container">
-                    <div class="tudao">
+                    <div class="tudao{% if comentario.autor.professor %} professor{% endif %}">
                         <div class="">
                             <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario.autor.aluno.file_path %}">
                                 <div class="d-flex flex-column inf"><span class="name">{{ comentario.autor }}</span><span class="date">{{ comentario.data_de_criacao |date:"d M Y \à\s H:i" }}</span></div>
@@ -256,7 +265,7 @@ a{
                 {% for comentario_filho in comentario.comentario_set.all %}
                     <div class="comentario" id="{{ comentario_filho.id }}">
                         <div class="container d-flex justify-content-end">
-                            <div class="tudao tudinho">
+                            <div class="tudao tudinho{% if comentario_filho.autor.professor %} professor{% endif %}">
                                 <div class="">
                                     <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario_filho.autor.aluno.file_path %}">
                                         <div class="d-flex flex-column inf"><span class="name">{{ comentario_filho.autor }}</span><span class="date">{{ comentario_filho.data_de_criacao }}</span></div>

@@ -3,7 +3,7 @@ from django.db.models import Avg, Count
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import generic
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -83,6 +83,13 @@ class DisciplinaDetailView(generic.DetailView):
         context["avaliacoes"] = avals
         context["comentario_form"] = ComentarioForm()
         return context
+
+class DisciplinaUpdateView(PermissionRequiredMixin, generic.UpdateView):
+    model = Disciplina
+    fields = ['descricao']
+    template_name = 'update.html'
+    permission_required = 'app.change_disciplina'
+
 
 class AlunoDetailView(generic.DetailView):
     model = Aluno
