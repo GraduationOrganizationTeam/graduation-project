@@ -41,7 +41,6 @@ class DisciplinaListView(generic.ListView):
 
         if self.request.GET.get("o",False):
 
-            print(queryset[0].c1)
             
             ORDERING_DICT = {
                 "1":'departamento',
@@ -167,7 +166,6 @@ def create_avaliacao(request,slug):
         if query.exists():
             date_format = "%H:%M:%S"
             month = 2629800
-            print(query.values("data_de_criacao")[0])
             diff = datetime.utcnow() - query[0].data_de_criacao.replace(tzinfo=None)
             if diff.days < 5*30:
                 raise ValidationError(_('Deve-se esperar 5 meses entre avaliações'),
