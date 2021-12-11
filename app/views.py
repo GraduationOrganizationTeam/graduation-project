@@ -1,4 +1,5 @@
 from .models import *
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg, Count
 from django.views import View
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
@@ -166,6 +167,18 @@ class UpdateLikes(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,))+ f"#{comment.id}")
         return HttpResponseRedirect(reverse('subject', args=(comment.disciplina.slug,))+ f"#{comment.id}")
 
+@login_required
+def fav_disciplina(request, slug):
+
+    try:
+        aluno = Aluno.objects.get(usuario=request.user)
+        aluno.disciplina.add(Disciplina.objects.get(slug=slug))
+    except ObjectDoesNotExist:
+        prof = Professor.objects.get(usuario=request.user)
+        prof.disciplina.add(Disciplina.objects.get(slug=slug))
+    
+    next = request.POST.get('next','/')
+    return HttpResponseRedirect(next)
 
 @login_required
 def create_avaliacao(request,slug):
