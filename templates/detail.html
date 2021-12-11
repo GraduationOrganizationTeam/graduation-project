@@ -206,6 +206,11 @@ a{
             <h2>
                 {{ disciplina.nome }}
             </h2>
+            <ul>
+                {% for professor in disciplina.professor_set.all %}
+                <li><a href="{% url 'profile_professor' professor.slug %}">{{ professor.nome }}</a></li>
+                {% endfor %}
+            </ul>
             <p class="align-justify">
                 {{ disciplina.descricao }}
             </p>
@@ -230,7 +235,7 @@ a{
                 <div class="container">
                     <div class="tudao{% if comentario.autor.professor %} professor{% endif %}">
                         <div class="">
-                            <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario.autor.aluno.file_path %}">
+                            <div class="d-flex"><img class="rounded-circle" src="{% if comentario.autor.professor %}{% static ''|add:comentario.autor.professor.file_path %}{% else %}{% static ''|add:comentario.autor.aluno.file_path %}{% endif %}">
                                 <div class="d-flex flex-column inf"><span class="name">{{ comentario.autor }}</span><span class="date">{{ comentario.data_de_criacao |date:"d M Y \à\s H:i" }}</span></div>
                             </div>
                             <div class="oficial">
@@ -267,7 +272,7 @@ a{
                         <div class="container d-flex justify-content-end">
                             <div class="tudao tudinho{% if comentario_filho.autor.professor %} professor{% endif %}">
                                 <div class="">
-                                    <div class="d-flex"><img class="rounded-circle" src="{% static ''|add:comentario_filho.autor.aluno.file_path %}">
+                                    <div class="d-flex"><img class="rounded-circle" src="{% if comentario_filho.autor.professor %}{% static ''|add:comentario_filho.autor.professor.file_path %}{% else %}{% static ''|add:comentario_filho.autor.aluno.file_path %}{% endif %}">
                                         <div class="d-flex flex-column inf"><span class="name">{{ comentario_filho.autor }}</span><span class="date">{{ comentario_filho.data_de_criacao }}</span></div>
                                     </div>
                                     <div class="oficial">

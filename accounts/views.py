@@ -6,6 +6,7 @@ from app.models import Aluno, Professor
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.core.exceptions import ObjectDoesNotExist
 
 def signup(request):
     if request.method == 'POST':
@@ -37,5 +38,13 @@ def signup(request):
 
 @login_required
 def get_my_profile(request):
-    slug = request.user.aluno.slug
-    return HttpResponseRedirect(reverse('profile', args=(slug, )))
+
+    try:
+        aluno = Aluno.objects.get(usuario=request.user)
+        slug = aluno.slug
+        dec = '_aluno'
+    except ObjectDoesNotExist:
+        slug = request.user.professor.slug
+        dec = '_professor'
+
+    return HttpResponseRedirect(reverse('profile'+dec, args=(slug, )))

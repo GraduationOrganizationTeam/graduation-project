@@ -37,7 +37,7 @@ Lista de Disciplinas
                         </div>
                     </div>
                     <ul>
-                        {% for professor in disciplina.professores %}
+                        {% for professor in disciplina.professor_set.all %}
                         <li>{{ professor.nome }}</li>
                         {% endfor %}
                     </ul>

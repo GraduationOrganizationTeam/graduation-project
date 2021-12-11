@@ -94,10 +94,14 @@ class DisciplinaUpdateView(PermissionRequiredMixin, generic.UpdateView):
 class AlunoDetailView(generic.DetailView):
     model = Aluno
     template_name = 'profile.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    context_object_name = 'conta'
 
+
+class ProfessorDetailView(generic.DetailView):
+    model = Professor
+    template_name = 'profile.html'
+    context_object_name = 'conta'
+    
 
 # Criar Comentário Aninhado
 class CreateComentarioAninhado(LoginRequiredMixin, View):

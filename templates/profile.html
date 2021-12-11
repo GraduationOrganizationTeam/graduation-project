@@ -78,40 +78,40 @@ Meu Perfil
             <img src="/static/default.png" alt="Foto de perfil" class="photo_perfil">
             <div class="user-data disciplinas_borda">
                 <div class="user">
-                    <p>{{aluno.nome}} | {{aluno.usuario}}</p>
+                    <p>{{conta.nome}} | {{conta.usuario}}</p>
                 </div>
                 <div class="user">
-                    <p> Escola Politécnica | {{aluno.departamento}}</p>
+                    <p> Escola Politécnica | {{conta.departamento}}</p>
                 </div>
                 <div class="user">
-                    <p> Ano de ingresso: {{aluno.ano_de_ingresso}}</p>
+                    <p> Ano de ingresso: {{conta.ano_de_ingresso}}</p>
                 </div>
             </div>
         </div>
         <div class="my-4 disciplinas_borda">
 
-            {% if aluno.avaliacao_set %}
-                <p>Este usuário avaliou {{ aluno.avaliacao_set.count }} disciplinas</p>
+            {% if conta.usuario.avaliacao_set %}
+                <p>Este usuário avaliou {{ conta.usuario.avaliacao_set.count }} disciplinas</p>
             {% else %}
                 <p>Este usuário ainda não realizou avaliações</p>
             {% endif %}
 
-            {% if aluno.avaliacao_set %}
-                <p class="mb-0">Este usuário comentou {{ aluno.comentario_set.count }} vezes</p>
+            {% if conta.usuario.comentario_set %}
+                <p class="mb-0">Este usuário comentou {{ conta.usuario.comentario_set.count }} vezes</p>
             {% else %}
                 <p class="mb-0">Este usuário ainda não realizou comentários</p>
             {% endif %}
         </div>
     </div>
 
-    {% if aluno.usuario.username == request.user.username %}
+    {% if conta.usuario.username == request.user.username %}
 
     <div class="disciplinas_profile col-md-3 ms-md-3 d-flex flex-column justify-content-evenly">
         <div class="disciplinas_borda">
             <h4> Minhas disciplinas: </h4>
             <ul class="p-0"> 
-                {% if aluno.disciplina.all %}
-                {% for disciplina in aluno.disciplina.all %}
+                {% if conta.disciplina.all %}
+                {% for disciplina in conta.disciplina.all %}
                 <li> ⭐ <a href="{% url 'subject' disciplina.slug %}">  {{disciplina}} </a></li>
 
                 {% endfor %}
