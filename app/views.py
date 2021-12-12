@@ -90,6 +90,8 @@ class DisciplinaUpdateView(PermissionRequiredMixin, generic.UpdateView):
     fields = ['descricao']
     template_name = 'update.html'
     permission_required = 'app.change_disciplina'
+    def get_success_url(self):
+        return reverse('subject',args=(self.object.slug,))
 
 
 class AlunoDetailView(generic.DetailView):
@@ -192,8 +194,8 @@ def create_avaliacao(request,slug):
             month = 2629800
             diff = datetime.utcnow() - query[0].data_de_criacao.replace(tzinfo=None)
             if diff.days < 5*30:
-                raise ValidationError(_('Deve-se esperar 5 meses entre avaliações'),
-                                        code='invalid')
+                # raise ValidationError(_('Deve-se esperar 5 meses entre avaliações'),code='invalid')
+                return render(request, 'error_eval.html', {})
         
         if avaliacao_form.is_valid():
             disciplina = Disciplina.objects.get(slug=slug)
