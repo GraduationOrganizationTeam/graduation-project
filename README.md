@@ -6,12 +6,14 @@ The site has 2 agents: teachers and ad students, each one of them with diferent 
 
 The creation of the site mainly used: 
 
-* Normal `HTML` and `CSS` with Bootstrap
+* Normal `HTML` and `CSS` with Bootstrap and `JavaScript` for basic development
 
-* `React` for certain messages and interactions (also see: [React repository]())
+* `React` for certain messages and interactions (also see: [React repository](https://github.com/GraduationOrganizationTeam/react-graduation))
 
 * `Django` 
 
 * `SQL`
 
 * `Heroku` framework for deployment of the initial website 
+
+Documents regarding the database design and usecases (portuguese) can be found in `documentos` directory
