@@ -1,5 +1,7 @@
 # GraduatiON - Site for students and professors to evaluate and talk about courses 
 
+DEPLOY LINK: [http://projeto-graduation.herokuapp.com](http://projeto-graduation.herokuapp.com)
+
 This project, created mostly using the Django Framerwork, was developted with the intention of bringing a safe environment for students to talk and evaluate the many courses attended in College. 
 
 The site has 2 agents: teachers and ad students, each one of them with diferent privileges to interact with the course page. 
