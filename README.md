@@ -1,6 +1,6 @@
 # GraduatiON - Site for students and professors to evaluate and talk about courses 
 
-DEPLOY LINK: [http://projeto-graduation.herokuapp.com](http://projeto-graduation.herokuapp.com)
+DEPLOY LINK: [http://pedrorosa.pythonanywhere.com/](http://pedrorosa.pythonanywhere.com/)
 
 This project, created mostly using the Django Framerwork, was developted with the intention of bringing a safe environment for students to talk and evaluate the many courses attended in College. 
 
